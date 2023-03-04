@@ -8,18 +8,16 @@ class ShotgunSequencing:
         self.max_read_length = max_read_length
         self.coverage = coverage
 
-    def generate_genome(self, genome_length):
-        
+    def generate_genome(self, genome_length):        
         generated_genome = ''
-        bases = ['A', 'C', 'C', 'T']
+        bases = ['A', 'C', 'G', 'T']
         
         for i in range(genome_length):
             generated_genome += random.choice(bases)
             
         return generated_genome
     
-    def generate_reads(self, genome, min_read_length, max_read_length):
-        
+    def generate_reads(self, genome, min_read_length, max_read_length):        
         dna_reads = []
         genome_size = len(genome)
         position = 0
@@ -39,24 +37,16 @@ class ShotgunSequencing:
         random.shuffle(dna_reads)
         return dna_reads
     
-    def shotgun(self):
-
+    def generate_shotgun_reads(self):
         shotgun_reads = []
         genome = self.generate_genome(self.genome_length)
         
-        print(genome, "\n")
-        
         for i in range(self.coverage):
             dna_reads = self.generate_reads(genome, self.min_read_length, self.max_read_length)
-            print("{} Shotgun reads: {}".format(i, dna_reads))
-            
-            if genome == "".join(dna_reads):
-                print("".join(dna_reads), "\n")
-            
-            shotgun_reads.append(dna_reads)
-            
+            shotgun_reads.extend(self.shuffle_reads(dna_reads))
+
         return shotgun_reads
-        
+
 if __name__ == '__main__':
     generator = ShotgunSequencing(100, 2, 10, 10)
-    print(generator.shotgun())
+    print(generator.generate_shotgun_reads())
