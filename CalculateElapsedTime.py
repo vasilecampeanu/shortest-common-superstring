@@ -1,33 +1,46 @@
 import time
 import matplotlib.pyplot as plt
+from ShotgunSequencing import *
 
-# define the number of runs to average over
-num_runs = 100000
+def time_function(func, num_runs=100):
+    """ Times the execution of a given function and returns the elapsed time.
 
-# initialize a list for storing the elapsed times
-elapsed_times = []
+    Args:
+        func (callable): The function to time.
+        *args: The positional arguments to pass to the function.
+        num_runs (int): The number of times to run the function.
+        **kwargs: The keyword arguments to pass to the function.
 
-for i in range(num_runs):
-    # Start the timer
-    start_time = time.perf_counter()
-    
-    # Get shortest path
-    # Call the algorithm here
-    
-    # End the timer
-    end_time = time.perf_counter()
-    
-    # Compute the elapsed time and add it to the list
-    elapsed_time = end_time - start_time
-    elapsed_times.append(elapsed_time)
+    Returns:
+        float: The average elapsed time (in seconds) over num_runs.
+    """
 
-# Plot the elapsed times using a line chart
-plt.plot(elapsed_times)
+    elapsed_times = []
+    generator = ShotgunSequencing(100, 2, 25, 50)
 
-# Add a title and labels for the axes
-plt.title("Elapsed Times for TSP Function")
-plt.xlabel("Run Number")
-plt.ylabel("Elapsed Time (s)")
+    for i in range(num_runs):
+        start_time = time.perf_counter()
+        dna_reads = generator.generate_shotgun_reads()
+        func(dna_reads)
+        end_time = time.perf_counter()
+        elapsed_time = end_time - start_time
+        elapsed_times.append(elapsed_time)
 
-# Show the plot
-plt.show()
+    return elapsed_times
+
+def plot_elapsed_times(elapsed_times, title=None):
+    """Plots the elapsed times as a line chart.
+
+    Args:
+        elapsed_times (list of float): The elapsed times to plot.
+        title (str): The title of the plot.
+    """
+
+    plt.plot(elapsed_times)
+    plt.xlabel("Run Number")
+    plt.ylabel("Elapsed Time (s)")
+
+    if title:
+        plt.title(title)
+
+    plt.show()
