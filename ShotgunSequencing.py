@@ -11,7 +11,7 @@ class ShotgunSequencing:
     def generate_genome(self, genome_length):        
         generated_genome = ''
         bases = ['A', 'C', 'G', 'T']
-        
+
         for i in range(genome_length):
             generated_genome += random.choice(bases)
             
@@ -40,6 +40,8 @@ class ShotgunSequencing:
     def generate_shotgun_reads(self):
         shotgun_reads = []
         genome = self.generate_genome(self.genome_length)
+
+        print(genome)
         
         for i in range(self.coverage):
             dna_reads = self.generate_reads(genome, self.min_read_length, self.max_read_length)
@@ -48,5 +50,5 @@ class ShotgunSequencing:
         return shotgun_reads
 
 if __name__ == '__main__':
-    generator = ShotgunSequencing(100, 2, 10, 10)
+    generator = ShotgunSequencing(50, 2, 25, 5)
     print(generator.generate_shotgun_reads())
